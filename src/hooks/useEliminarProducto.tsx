@@ -1,0 +1,32 @@
+import { useState } from "react";
+
+export function useEliminarProducto() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const eliminarProducto = async (codigo: string) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(
+        `https://almacenlp-production-3050.up.railway.app/api/Productos/${codigo}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!res.ok) throw new Error(`${res.status} - ${res.statusText}`);
+
+      return await res.json();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Error al eliminar producto";
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { eliminarProducto, loading, error };
+}
