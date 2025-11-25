@@ -5,10 +5,6 @@ interface IconoNavProps {
   activo?: boolean;
 }
 
-export function IconoNav({ icono: Icono, activo }: IconoNavProps) {
-  return (
-    <Icono
-      size={20}
-    />
-  );
+export function IconoNav({ icono: Icono }: IconoNavProps) {
+  return <Icono size={20} />;
 }

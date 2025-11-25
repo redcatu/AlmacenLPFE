@@ -45,7 +45,7 @@ export function ProductosTemplate({
         setMostrarFormulario(false);
       }
       // Forzar recarga de la lista
-      setRecargarLista(prev => prev + 1);
+      setRecargarLista((prev) => prev + 1);
     } catch (err) {
       // Error ya manejado en los hooks
     }
@@ -66,7 +66,7 @@ export function ProductosTemplate({
     try {
       await onEliminar(producto.codigo);
       // Forzar recarga de la lista
-      setRecargarLista(prev => prev + 1);
+      setRecargarLista((prev) => prev + 1);
     } catch (err) {
       // Error ya manejado en los hooks
     }
@@ -77,9 +77,9 @@ export function ProductosTemplate({
       setMostrarFormulario(!mostrarFormulario);
       // Scroll al formulario después de que se renderice
       setTimeout(() => {
-        formularioRef.current?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+        formularioRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
         });
       }, 100);
     }
@@ -87,9 +87,9 @@ export function ProductosTemplate({
 
   useEffect(() => {
     if (mostrarFormulario && formularioRef.current) {
-      formularioRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
+      formularioRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
       });
     }
   }, [mostrarFormulario]);
@@ -99,15 +99,25 @@ export function ProductosTemplate({
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold">Inventario de Productos</h2>
-          <p className="text-muted">Gestiona el catálogo de productos del almacén.</p>
+          <p className="text-muted">
+            Gestiona el catálogo de productos del almacén.
+          </p>
         </div>
         <BotonSimple
-          texto={mostrarFormulario && !productoEditando ? "Ocultar Formulario" : "+ Nuevo Producto"}
+          texto={
+            mostrarFormulario && !productoEditando
+              ? "Ocultar Formulario"
+              : "+ Nuevo Producto"
+          }
           onClick={handleMostrarFormulario}
         />
       </div>
 
-      <ListaProductos onEditar={handleEditar} onEliminar={handleEliminar} recargar={recargarLista} />
+      <ListaProductos
+        onEditar={handleEditar}
+        onEliminar={handleEliminar}
+        recargar={recargarLista ? true : false}
+      />
       {(loading || loadingActualizar || loadingEliminar) && <p>Cargando...</p>}
       {(error || errorActualizar || errorEliminar) && (
         <p className="text-danger">
