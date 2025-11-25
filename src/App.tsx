@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductosPage } from "./components/pages/ProductosPage";
 import { InventariosPage } from "./components/pages/InventariosPage";
 import { LotesPage } from "./components/pages/LotesPage";
@@ -7,7 +7,16 @@ import { DashboardPage } from "./components/pages/DashboardPage";
 import { Navbar } from "./components/organism/Navbar";
 
 function App() {
-  const [paginaActiva, setPaginaActiva] = useState("dashboard");
+  // Cargar página activa desde localStorage o usar "dashboard" por defecto
+  const [paginaActiva, setPaginaActiva] = useState(() => {
+    const saved = localStorage.getItem("paginaActiva");
+    return saved || "dashboard";
+  });
+
+  // Guardar página activa en localStorage cuando cambie
+  useEffect(() => {
+    localStorage.setItem("paginaActiva", paginaActiva);
+  }, [paginaActiva]);
 
   const renderPagina = () => {
     switch (paginaActiva) {

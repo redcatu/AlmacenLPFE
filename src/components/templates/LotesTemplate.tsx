@@ -22,15 +22,26 @@ export function LotesTemplate({
   errorEliminar,
 }: LotesTemplateProps) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [recargarLista, setRecargarLista] = useState(0);
 
   const handleSubmit = async (lote: Omit<LotesDTO, "fechaIngreso">) => {
-    await onSubmit(lote);
-    setMostrarFormulario(false);
+    try {
+      await onSubmit(lote);
+      setMostrarFormulario(false);
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
+    }
   };
 
   const handleEliminar = async (lote: LotesDTO) => {
     if (!confirm("¿Seguro que deseas eliminar este lote?")) return;
-    await onEliminar(lote.codigo);
+    try {
+      await onEliminar(lote.codigo);
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
+    }
   };
 
   return (
@@ -60,7 +71,7 @@ export function LotesTemplate({
         </p>
       )}
 
-      <ListaLotes onEliminar={handleEliminar} />
+      <ListaLotes onEliminar={handleEliminar} recargar={recargarLista} />
     </div>
   );
 }

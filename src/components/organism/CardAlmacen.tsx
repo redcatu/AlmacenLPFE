@@ -27,45 +27,44 @@ export function CardAlmacen(props: CardAlmacenProps) {
 
   return (
     <>
-      <div className="card shadow-sm">
-        <div className="card-header bg-primary text-white">
-          <h4 className="mb-0">
-            <i className="bi bi-warehouse me-2"></i>
-            {almacen.nombre}
+      <div className="card dashboard-card">
+        <div className="card-header dashboard-header">
+          <h4 className="mb-0 dashboard-title">
+            {almacen.nombre.toUpperCase()}
           </h4>
         </div>
-        <div className="card-body">
+        <div className="card-body dashboard-body">
           <div className="row mb-3">
             <div className="col-md-6">
-              <p className="mb-2">
+              <p className="mb-2 dashboard-info">
                 <strong>Código:</strong> {almacen.codigo}
               </p>
-              <p className="mb-2">
+              <p className="mb-2 dashboard-info">
                 <strong>Código Sucursal:</strong> {almacen.codigoSucursal}
               </p>
             </div>
             <div className="col-md-6">
-              <p className="mb-2">
+              <p className="mb-2 dashboard-info">
                 <strong>Capacidad Máxima:</strong> {almacen.capacidadMaxima.toLocaleString()}
               </p>
-              <p className="mb-2">
+              <p className="mb-2 dashboard-info">
                 <strong>Cantidad Disponible:</strong> {almacen.cantidadDisponible.toLocaleString()}
               </p>
             </div>
           </div>
           
-          <hr />
+          <hr className="dashboard-divider" />
           
           <div className="mb-3">
             <div className="d-flex justify-content-between mb-2">
-              <span><strong>Ocupación del Almacén</strong></span>
-              <span className={`badge bg-${getProgressColor()}`}>
+              <span className="dashboard-label"><strong>Ocupación del Almacén</strong></span>
+              <span className="badge dashboard-badge-success">
                 {porcentajeOcupacion.toFixed(1)}%
               </span>
             </div>
-            <div className="progress" style={{ height: "25px" }}>
+            <div className="progress dashboard-progress">
               <div
-                className={`progress-bar bg-${getProgressColor()}`}
+                className="progress-bar dashboard-progress-bar"
                 role="progressbar"
                 style={{ width: `${porcentajeOcupacion}%` }}
                 aria-valuenow={porcentajeOcupacion}
@@ -79,21 +78,21 @@ export function CardAlmacen(props: CardAlmacenProps) {
           
           <div className="row text-center mt-4">
             <div className="col-md-4">
-              <div className="p-3 bg-light rounded">
-                <h5 className="text-primary mb-1">{almacen.capacidadMaxima.toLocaleString()}</h5>
-                <small className="text-muted">Capacidad Total</small>
+              <div className="dashboard-summary-card">
+                <h5 className="dashboard-summary-number dashboard-purple">{almacen.capacidadMaxima.toLocaleString()}</h5>
+                <small className="dashboard-summary-label">Capacidad Total</small>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="p-3 bg-light rounded">
-                <h5 className="text-success mb-1">{espacioOcupado.toLocaleString()}</h5>
-                <small className="text-muted">En Uso</small>
+              <div className="dashboard-summary-card">
+                <h5 className="dashboard-summary-number dashboard-green">{espacioOcupado.toLocaleString()}</h5>
+                <small className="dashboard-summary-label">En Uso</small>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="p-3 bg-light rounded">
-                <h5 className="text-info mb-1">{espacioDisponible.toLocaleString()}</h5>
-                <small className="text-muted">Espacio Libre</small>
+              <div className="dashboard-summary-card">
+                <h5 className="dashboard-summary-number dashboard-purple-light">{espacioDisponible.toLocaleString()}</h5>
+                <small className="dashboard-summary-label">Espacio Libre</small>
               </div>
             </div>
           </div>

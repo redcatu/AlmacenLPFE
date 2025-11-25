@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useMovimientos } from "../../hooks/useMovimientos";
 import { CardMovimiento } from "./CardMovimiento";
 import type { MovimientosInventariosDTO } from "../../types/MovimientosInventarios";
@@ -5,10 +6,17 @@ import type { MovimientosInventariosDTO } from "../../types/MovimientosInventari
 interface ListaMovimientosProps {
   onEditar?: (movimiento: MovimientosInventariosDTO) => void;
   onEliminar?: (movimiento: MovimientosInventariosDTO) => void;
+  recargar?: number;
 }
 
-export function ListaMovimientos({ onEditar, onEliminar }: ListaMovimientosProps) {
-  const { movimientos, loading, error } = useMovimientos();
+export function ListaMovimientos({ onEditar, onEliminar, recargar }: ListaMovimientosProps) {
+  const { movimientos, loading, error, recargar: recargarMovimientos } = useMovimientos();
+  
+  useEffect(() => {
+    if (recargar !== undefined) {
+      recargarMovimientos();
+    }
+  }, [recargar, recargarMovimientos]);
   if (loading) return <div>Cargando movimientos...</div>;
   if (error && !error.includes("404")) {
     return <div className="text-danger">Error: {error}</div>;

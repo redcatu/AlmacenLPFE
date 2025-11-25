@@ -17,10 +17,16 @@ export function MovimientosTemplate({
   error,
 }: MovimientosTemplateProps) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [recargarLista, setRecargarLista] = useState(0);
 
   const handleSubmit = async (movimiento: Omit<MovimientosInventariosDTO, "fecha">) => {
-    await onSubmit(movimiento);
-    setMostrarFormulario(false);
+    try {
+      await onSubmit(movimiento);
+      setMostrarFormulario(false);
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
+    }
   };
 
   return (
@@ -48,7 +54,7 @@ export function MovimientosTemplate({
 
       <ListaCargasPendientes />
 
-      <ListaMovimientos />
+      <ListaMovimientos recargar={recargarLista} />
     </div>
   );
 }

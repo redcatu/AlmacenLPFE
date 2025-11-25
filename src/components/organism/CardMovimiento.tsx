@@ -30,11 +30,17 @@ export function CardMovimiento(props: CardMovimientoProps) {
   return (
     <>
       <div className="card" style={{ width: "18rem" }}>
-        <h5 className="card-header d-flex justify-content-between align-items-center">
-          <span>Movimiento: {movimiento.codigo}</span>
-          <span className={`badge ${getBadgeClass(movimiento.tipoMovimiento)}`}>
-            {movimiento.tipoMovimiento}
-          </span>
+        <h5 className="card-header card-movimiento-header">
+          <div className="d-flex flex-column">
+            <span style={{ color: 'var(--color-text-dark)', marginBottom: '0.5rem' }}>
+              Movimiento: {movimiento.codigo}
+            </span>
+            <span 
+              className={`badge ${getBadgeClass(movimiento.tipoMovimiento)} card-movimiento-badge`}
+            >
+              {movimiento.tipoMovimiento}
+            </span>
+          </div>
         </h5>
         <div className="card-body">
           <p className="card-text">

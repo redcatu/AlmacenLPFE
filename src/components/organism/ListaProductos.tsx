@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useProductos } from "../../hooks/useProductos";
 import { CardProducto } from "./CardProducto";
 import type { ProductoDTO } from "../../types/Producto";
@@ -5,10 +6,19 @@ import type { ProductoDTO } from "../../types/Producto";
 interface ListaProductosProps {
   onEditar: (producto: ProductoDTO) => void;
   onEliminar: (producto: ProductoDTO) => void;
+  recargar?: boolean;
 }
 
-export function ListaProductos({ onEditar, onEliminar }: ListaProductosProps) {
-  const { productos, loading, error } = useProductos();
+export function ListaProductos({ onEditar, onEliminar, recargar }: ListaProductosProps) {
+  const { productos, loading, error, recargar: recargarProductos } = useProductos();
+  
+  // Recargar cuando cambie el flag
+  useEffect(() => {
+    if (recargar !== undefined) {
+      recargarProductos();
+    }
+  }, [recargar, recargarProductos]);
+  
   if (loading) return <div>Cargando productos...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!productos.length) return <div>No hay productos</div>;

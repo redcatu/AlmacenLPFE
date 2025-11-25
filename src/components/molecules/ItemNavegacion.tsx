@@ -20,7 +20,7 @@ export function ItemNavegacion({
     <a
       href={href}
       onClick={onClick}
-      className={`item-navegacion ${activo ? "activo" : ""}`}
+      className={`navbar-sidebar-item ${activo ? "active" : ""}`}
     >
       <IconoNav icono={icono} activo={activo} />
       <span>{texto}</span>

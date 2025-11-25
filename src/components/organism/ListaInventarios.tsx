@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useInventarios } from "../../hooks/useInventarios";
 import { CardInventario } from "./CardInventario";
 import type { InventariosDTO } from "../../types/Inventarios";
@@ -5,10 +6,18 @@ import type { InventariosDTO } from "../../types/Inventarios";
 interface ListaInventariosProps {
   onEditar?: (inventario: InventariosDTO) => void;
   onEliminar?: (inventario: InventariosDTO) => void;
+  recargar?: number;
 }
 
-export function ListaInventarios({ onEditar, onEliminar }: ListaInventariosProps) {
-  const { inventarios, loading, error } = useInventarios();
+export function ListaInventarios({ onEditar, onEliminar, recargar }: ListaInventariosProps) {
+  const { inventarios, loading, error, recargar: recargarInventarios } = useInventarios();
+  
+  useEffect(() => {
+    if (recargar !== undefined) {
+      recargarInventarios();
+    }
+  }, [recargar, recargarInventarios]);
+  
   if (loading) return <div>Cargando inventarios...</div>;
   if (error) return <div className="text-danger">Error: {error}</div>;
   if (!inventarios.length) return <div>No hay inventarios</div>;

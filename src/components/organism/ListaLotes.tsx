@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLotes } from "../../hooks/useLotes";
 import { CardLote } from "./CardLote";
 import type { LotesDTO } from "../../types/Lotes";
@@ -5,10 +6,18 @@ import type { LotesDTO } from "../../types/Lotes";
 interface ListaLotesProps {
   onEditar?: (lote: LotesDTO) => void;
   onEliminar?: (lote: LotesDTO) => void;
+  recargar?: number;
 }
 
-export function ListaLotes({ onEditar, onEliminar }: ListaLotesProps) {
-  const { lotes, loading, error } = useLotes();
+export function ListaLotes({ onEditar, onEliminar, recargar }: ListaLotesProps) {
+  const { lotes, loading, error, recargar: recargarLotes } = useLotes();
+  
+  useEffect(() => {
+    if (recargar !== undefined) {
+      recargarLotes();
+    }
+  }, [recargar, recargarLotes]);
+  
   if (loading) return <div>Cargando lotes...</div>;
   if (error) return <div className="text-danger">Error: {error}</div>;
   if (!lotes.length) return <div>No hay lotes</div>;

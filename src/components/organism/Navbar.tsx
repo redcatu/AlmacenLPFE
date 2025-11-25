@@ -1,5 +1,5 @@
-import { BarChart3, Package, Truck, Menu, X } from "lucide-react";
-
+import { BarChart3, ShoppingBag, ClipboardList, Layers, Truck, Menu, X } from "lucide-react";
+import "../../styles/global.css";
 import { useState } from "react";
 import { LogoNav } from "../atoms/LogoNav";
 import { ItemNavegacion } from "../molecules/ItemNavegacion";
@@ -32,14 +32,14 @@ export function Navbar(props: NavbarProps) {
       href: "#dashboard",
       id: "dashboard",
     },
-    { icono: Package, texto: "Productos", href: "#productos", id: "productos" },
+    { icono: ShoppingBag, texto: "Productos", href: "#productos", id: "productos" },
     {
-      icono: Package,
+      icono: ClipboardList,
       texto: "Inventarios",
       href: "#inventarios",
       id: "inventarios",
     },
-    { icono: Package, texto: "Lotes", href: "#lotes", id: "lotes" },
+    { icono: Layers, texto: "Lotes", href: "#lotes", id: "lotes" },
     {
       icono: Truck,
       texto: "Movimientos",

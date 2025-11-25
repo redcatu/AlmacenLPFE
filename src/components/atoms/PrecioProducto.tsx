@@ -5,7 +5,7 @@ export function PrecioProducto(props: PrecioProductoProps) {
   const { precio } = props;
   return (
     <>
-      <span className={`bg-success text-white rounded px-2 py-1`}>
+      <span style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-text-dark)' }}>
         ${precio?.toFixed(2)}
       </span>
     </>

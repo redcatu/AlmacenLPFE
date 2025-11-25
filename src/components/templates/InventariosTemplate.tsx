@@ -22,15 +22,26 @@ export function InventariosTemplate({
   errorEliminar,
 }: InventariosTemplateProps) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [recargarLista, setRecargarLista] = useState(0);
 
   const handleSubmit = async (inventario: Omit<InventariosDTO, "productoStock">) => {
-    await onSubmit(inventario);
-    setMostrarFormulario(false);
+    try {
+      await onSubmit(inventario);
+      setMostrarFormulario(false);
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
+    }
   };
 
   const handleEliminar = async (inventario: InventariosDTO) => {
     if (!confirm("¿Seguro que deseas eliminar este inventario?")) return;
-    await onEliminar(inventario.codigo);
+    try {
+      await onEliminar(inventario.codigo);
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
+    }
   };
 
   return (
@@ -60,7 +71,7 @@ export function InventariosTemplate({
         </p>
       )}
 
-      <ListaInventarios onEliminar={handleEliminar} />
+      <ListaInventarios onEliminar={handleEliminar} recargar={recargarLista} />
     </div>
   );
 }

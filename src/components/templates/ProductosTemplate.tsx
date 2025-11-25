@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ListaProductos } from "../organism/ListaProductos";
 import { FormularioProducto } from "../organism/FormularioProducto";
 import { BotonSimple } from "../atoms/BotonSimple";
@@ -31,15 +31,23 @@ export function ProductosTemplate({
   const [productoEditando, setProductoEditando] = useState<ProductoDTO | null>(
     null
   );
+  const [recargarLista, setRecargarLista] = useState(0);
+  const formularioRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async (producto: ProductoDTO) => {
-    if (productoEditando) {
-      await onActualizar(productoEditando.codigo, producto);
-      setProductoEditando(null);
-      setMostrarFormulario(false);
-    } else {
-      await onSubmit(producto);
-      setMostrarFormulario(false);
+    try {
+      if (productoEditando) {
+        await onActualizar(productoEditando.codigo, producto);
+        setProductoEditando(null);
+        setMostrarFormulario(false);
+      } else {
+        await onSubmit(producto);
+        setMostrarFormulario(false);
+      }
+      // Forzar recarga de la lista
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
     }
   };
 
@@ -55,8 +63,36 @@ export function ProductosTemplate({
 
   const handleEliminar = async (producto: ProductoDTO) => {
     if (!confirm("¿Seguro que deseas eliminar este producto? D:")) return;
-    await onEliminar(producto.codigo);
+    try {
+      await onEliminar(producto.codigo);
+      // Forzar recarga de la lista
+      setRecargarLista(prev => prev + 1);
+    } catch (err) {
+      // Error ya manejado en los hooks
+    }
   };
+
+  const handleMostrarFormulario = () => {
+    if (!productoEditando) {
+      setMostrarFormulario(!mostrarFormulario);
+      // Scroll al formulario después de que se renderice
+      setTimeout(() => {
+        formularioRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 100);
+    }
+  };
+
+  useEffect(() => {
+    if (mostrarFormulario && formularioRef.current) {
+      formularioRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  }, [mostrarFormulario]);
 
   return (
     <div className="container mt-4">
@@ -67,13 +103,11 @@ export function ProductosTemplate({
         </div>
         <BotonSimple
           texto={mostrarFormulario && !productoEditando ? "Ocultar Formulario" : "+ Nuevo Producto"}
-          onClick={() => {
-            if (!productoEditando) setMostrarFormulario(!mostrarFormulario);
-          }}
+          onClick={handleMostrarFormulario}
         />
       </div>
 
-      <ListaProductos onEditar={handleEditar} onEliminar={handleEliminar} />
+      <ListaProductos onEditar={handleEditar} onEliminar={handleEliminar} recargar={recargarLista} />
       {(loading || loadingActualizar || loadingEliminar) && <p>Cargando...</p>}
       {(error || errorActualizar || errorEliminar) && (
         <p className="text-danger">
@@ -82,7 +116,7 @@ export function ProductosTemplate({
       )}
 
       {mostrarFormulario && (
-        <div className="mb-4">
+        <div className="mb-4" ref={formularioRef}>
           <FormularioProducto
             onSubmit={handleSubmit}
             productoInicial={productoEditando || undefined}
